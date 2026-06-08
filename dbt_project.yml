@@ -1,0 +1,14 @@
+name: codebug
+version: "1.0.0"
+config-version: 2
+profile: codebug
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+target-path: "target"
+models:
+  codebug:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "dbt_schema_version": "https://schemas.getdbt.com/dbt/run-results/v6.json",
+    "dbt_version": "1.8.7",
+    "generated_at": "2026-06-04T00:42:31.512000Z",
+    "invocation_id": "dbt-build-2026-06-04-0051",
+    "env": {}
+  },
+  "results": [
+    {
+      "unique_id": "test.codebug.assert_won_amount_zero_when_not_won",
+      "status": "fail",
+      "message": "Got 2 results, configured to fail if != 0",
+      "failures": 2,
+      "execution_time": 0.21,
+      "thread_id": "Thread-1",
+      "adapter_response": {},
+      "timing": []
+    },
+    {
+      "unique_id": "model.codebug.fct_opportunity",
+      "status": "success",
+      "message": "OK created table model marts.fct_opportunity",
+      "failures": null,
+      "execution_time": 0.44,
+      "thread_id": "Thread-1",
+      "adapter_response": { "_message": "OK" },
+      "timing": []
+    }
+  ],
+  "elapsed_time": 1.13,
+  "args": { "which": "build", "select": ["fct_opportunity"] }
+}

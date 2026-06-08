@@ -1,0 +1,7 @@
+version: 2
+models:
+  - name: fct_opportunity
+    description: One row per opportunity with a won_amount that must be 0 unless is_won.
+    columns:
+      - name: opportunity_id
+        tests: [not_null, unique]
