@@ -10,5 +10,5 @@ select
     amount,
     close_date,
     is_won,
-    amount as won_amount
+    case when is_won then amount else 0 end as won_amount
 from {{ ref('stg_opportunities') }}
