@@ -1,17 +1,19 @@
 <!-- vd-meta
 engine: dbt
 artifact: fct_opportunity
-load_id: dbt-build-2026-06-04-0051
-error_code: DATA_QUALITY
-error_message: "Singular test assert_won_amount_zero_when_not_won failed: 2 rows where a not-won opportunity has a non-zero won_amount"
+load_id: dbt-build-2026-06-12-0107
+error_code: TRANSIENT_CONNECTION
+error_message: "Read timed out while connecting to the DuckDB catalog: socket timeout after 30s (transient network error)"
 severity: p2
 -->
 
-## Data-quality failure: `fct_opportunity.won_amount` non-zero for lost opportunities
+## Pipeline failure: `fct_opportunity` dbt build timed out
 
-The dbt build for `fct_opportunity` passed the model run but failed the singular
-test `assert_won_amount_zero_when_not_won`: 2 opportunities with `is_won = false`
-report a non-zero `won_amount`. This is a logic error in the model, not a
-transient or infra failure — no runbook re-run will fix it; the model SQL must
-change. See `target/run_results.json` (the failing test) and
-`models/marts/fct_opportunity.sql` in the working tree.
+The scheduled dbt build for `fct_opportunity` failed with a transient connection
+error (socket timeout reaching the warehouse catalog). No model or schema change
+was deployed recently and the project compiles cleanly — this looks like a
+transient network blip, not a logic or contract error.
+
+Last run: `dbt-build-2026-06-12-0107` — status `error`,
+`error_code TRANSIENT_CONNECTION`. See `target/run_results.json` in the
+working tree (the model node carries the timeout message).

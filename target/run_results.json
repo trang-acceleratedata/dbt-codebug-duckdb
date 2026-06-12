@@ -1,33 +1,244 @@
 {
   "metadata": {
     "dbt_schema_version": "https://schemas.getdbt.com/dbt/run-results/v6.json",
-    "dbt_version": "1.8.7",
-    "generated_at": "2026-06-04T00:42:31.512000Z",
-    "invocation_id": "dbt-build-2026-06-04-0051",
+    "dbt_version": "1.11.8",
+    "generated_at": "2026-06-12T07:36:47.146181Z",
+    "invocation_id": "44cb600f-aef8-4d77-b0d9-2eb880b5fa5e",
+    "invocation_started_at": "2026-06-12T07:36:41.968818Z",
     "env": {}
   },
   "results": [
     {
-      "unique_id": "test.codebug.assert_won_amount_zero_when_not_won",
-      "status": "fail",
-      "message": "Got 2 results, configured to fail if != 0",
-      "failures": 2,
-      "execution_time": 0.21,
-      "thread_id": "Thread-1",
-      "adapter_response": {},
-      "timing": []
+      "status": "success",
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2026-06-12T07:36:46.445910Z",
+          "completed_at": "2026-06-12T07:36:46.445920Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2026-06-12T07:36:46.446819Z",
+          "completed_at": "2026-06-12T07:36:46.623522Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.18076109886169434,
+      "adapter_response": {
+        "_message": "INSERT 4",
+        "code": "INSERT",
+        "rows_affected": 4
+      },
+      "message": "INSERT 4",
+      "failures": null,
+      "unique_id": "seed.codebug.opportunity",
+      "compiled": null,
+      "compiled_code": null,
+      "relation_name": null,
+      "batch_results": null
     },
     {
-      "unique_id": "model.codebug.fct_opportunity",
       "status": "success",
-      "message": "OK created table model marts.fct_opportunity",
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2026-06-12T07:36:46.634806Z",
+          "completed_at": "2026-06-12T07:36:46.653066Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2026-06-12T07:36:46.653951Z",
+          "completed_at": "2026-06-12T07:36:46.760160Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.1278691291809082,
+      "adapter_response": {
+        "_message": "OK"
+      },
+      "message": "OK",
       "failures": null,
-      "execution_time": 0.44,
-      "thread_id": "Thread-1",
-      "adapter_response": { "_message": "OK" },
-      "timing": []
+      "unique_id": "model.codebug.stg_opportunities",
+      "compiled": true,
+      "compiled_code": "select\n    id          as opportunity_id,\n    account_id,\n    name        as opportunity_name,\n    stage_name,\n    amount,\n    close_date,\n    is_won\nfrom \"fixture-check\".\"main\".\"opportunity\"",
+      "relation_name": "\"fixture-check\".\"main\".\"stg_opportunities\"",
+      "batch_results": null
+    },
+    {
+      "status": "error",
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2026-06-12T07:36:46.769256Z",
+          "completed_at": "2026-06-12T07:36:46.775306Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2026-06-12T07:36:46.776040Z",
+          "completed_at": "2026-06-12T07:36:46.855656Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.08893823623657227,
+      "adapter_response": {
+        "_message": "OK"
+      },
+      "message": "Read timed out while connecting to the DuckDB catalog: socket timeout after 30s (transient network error)",
+      "failures": null,
+      "unique_id": "model.codebug.fct_opportunity",
+      "compiled": true,
+      "compiled_code": "-- BUG: won_amount must be 0 for opportunities that were not won.\n-- This computes it as `amount` for every row, so lost opportunities carry a\n-- non-zero won_amount. The singular test tests/assert_won_amount_zero_when_not_won.sql\n-- catches it. Correct logic: case when is_won then amount else 0 end.\nselect\n    opportunity_id,\n    account_id,\n    opportunity_name,\n    stage_name,\n    amount,\n    close_date,\n    is_won,\n    case when is_won then amount else 0 end as won_amount\nfrom \"fixture-check\".\"main\".\"stg_opportunities\"",
+      "relation_name": "\"fixture-check\".\"main\".\"fct_opportunity\"",
+      "batch_results": null
+    },
+    {
+      "status": "skipped",
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2026-06-12T07:36:46.864306Z",
+          "completed_at": "2026-06-12T07:36:46.977866Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2026-06-12T07:36:46.978950Z",
+          "completed_at": "2026-06-12T07:36:47.031688Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.17212867736816406,
+      "adapter_response": {
+        "_message": "OK"
+      },
+      "message": null,
+      "failures": 0,
+      "unique_id": "test.codebug.assert_won_amount_zero_when_not_won",
+      "compiled": true,
+      "compiled_code": "-- Fails when any not-won opportunity carries a non-zero won_amount.\nselect opportunity_id, is_won, won_amount\nfrom \"fixture-check\".\"main\".\"fct_opportunity\"\nwhere not is_won and won_amount != 0",
+      "relation_name": null,
+      "batch_results": null
+    },
+    {
+      "status": "skipped",
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2026-06-12T07:36:47.040326Z",
+          "completed_at": "2026-06-12T07:36:47.059325Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2026-06-12T07:36:47.060041Z",
+          "completed_at": "2026-06-12T07:36:47.075672Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.04128384590148926,
+      "adapter_response": {
+        "_message": "OK"
+      },
+      "message": null,
+      "failures": 0,
+      "unique_id": "test.codebug.not_null_fct_opportunity_opportunity_id.c8eebf9ccd",
+      "compiled": true,
+      "compiled_code": "\n    \n    \n\n\n\nselect opportunity_id\nfrom \"fixture-check\".\"main\".\"fct_opportunity\"\nwhere opportunity_id is null\n\n\n",
+      "relation_name": null,
+      "batch_results": null
+    },
+    {
+      "status": "skipped",
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2026-06-12T07:36:47.086669Z",
+          "completed_at": "2026-06-12T07:36:47.101476Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2026-06-12T07:36:47.102199Z",
+          "completed_at": "2026-06-12T07:36:47.124782Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.043584346771240234,
+      "adapter_response": {
+        "_message": "OK"
+      },
+      "message": null,
+      "failures": 0,
+      "unique_id": "test.codebug.unique_fct_opportunity_opportunity_id.a72765726b",
+      "compiled": true,
+      "compiled_code": "\n    \n    \n\nselect\n    opportunity_id as unique_field,\n    count(*) as n_records\n\nfrom \"fixture-check\".\"main\".\"fct_opportunity\"\nwhere opportunity_id is not null\ngroup by opportunity_id\nhaving count(*) > 1\n\n\n",
+      "relation_name": null,
+      "batch_results": null
     }
   ],
-  "elapsed_time": 1.13,
-  "args": { "which": "build", "select": ["fct_opportunity"] }
+  "elapsed_time": 0.9187958240509033,
+  "args": {
+    "exclude_resource_types": [],
+    "use_colors_file": true,
+    "partial_parse": true,
+    "write_json": true,
+    "partial_parse_file_diff": true,
+    "log_format": "default",
+    "project_dir": ".",
+    "strict_mode": false,
+    "introspect": true,
+    "show_resource_report": false,
+    "vars": {},
+    "require_all_warnings_handled_by_warn_error": false,
+    "cache_selected_only": false,
+    "include_saved_query": false,
+    "require_yaml_configuration_for_mf_time_spines": false,
+    "exclude": [],
+    "use_fast_test_edges": false,
+    "require_resource_names_without_spaces": true,
+    "require_explicit_package_overrides_for_builtin_materializations": true,
+    "require_batched_execution_for_custom_microbatch_strategy": false,
+    "source_freshness_run_project_hooks": true,
+    "upload_to_artifacts_ingest_api": false,
+    "warn_error_options": {
+      "error": [],
+      "warn": [],
+      "silence": []
+    },
+    "log_file_max_bytes": 10485760,
+    "validate_macro_args": false,
+    "printer_width": 80,
+    "defer": false,
+    "log_level_file": "debug",
+    "require_generic_test_arguments_property": true,
+    "use_colors": true,
+    "skip_nodes_if_on_run_start_fails": false,
+    "require_ref_searches_node_package_before_root": false,
+    "log_level": "info",
+    "state_modified_compare_more_unrendered_values": false,
+    "state_modified_compare_vars": false,
+    "favor_state": false,
+    "print": true,
+    "static_parser": true,
+    "empty": false,
+    "require_unique_project_resource_names": false,
+    "sqlparse": {
+      "MAX_GROUPING_DEPTH": null,
+      "MAX_GROUPING_TOKENS": null
+    },
+    "send_anonymous_usage_stats": true,
+    "invocation_command": "dbt build --project-dir . --profiles-dir .",
+    "which": "build",
+    "populate_cache": true,
+    "export_saved_queries": false,
+    "show_all_deprecations": false,
+    "log_path": "logs",
+    "profiles_dir": ".",
+    "require_nested_cumulative_type_params": false,
+    "log_format_file": "debug",
+    "resource_types": [],
+    "macro_debugging": false,
+    "select": [],
+    "quiet": false,
+    "show": false,
+    "indirect_selection": "eager",
+    "version_check": true
+  }
 }

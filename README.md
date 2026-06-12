@@ -20,3 +20,25 @@ agent's fix must land as a new commit on top. The correct fix is
   `target/manifest.json` (compiled SQL + dep graph), `issue-body.md` (`vd-meta`).
 - `runbooks/` — sample catalog; neither runbook matches a logic bug, so diagnose
   routes to `code-fix`.
+
+## Branch fixture/transient-retry
+
+This branch is the **transient-retry fixture** used by `packages/e2e-runbook-duckdb/`.
+`main` is the codefix fixture (buggy model, data-quality evidence, no matching runbook).
+This branch differs in three ways:
+
+- **Healthy model** — `fct_opportunity.sql` carries the correct
+  `case when is_won then amount else 0 end as won_amount` logic; `dbt build` passes
+  6/6 (1 seed, 2 models, 3 tests).
+- **Doctored transient evidence** — `target/run_results.json` and `issue-body.md`
+  describe a `TRANSIENT_CONNECTION` socket-timeout failure (`error_code:
+  TRANSIENT_CONNECTION`), not a data-quality failure. The model node has
+  `status: error` with the timeout message; its downstream tests are `skipped`.
+- **Local retry runbook** — `runbooks/runbook-dbt-retry-local/` is an
+  `auto-execute-eligible` runbook whose single execution step is `local-dbt-build`
+  (plain `dbt build`). The Fabric-based `runbook-dbt-retry/` has been removed.
+  `runbooks/runbook-capacity-scale-up/` remains as a deliberate non-matching decoy.
+
+A fair e2e on this branch expects the diagnose agent to match the transient-network
+pattern, select `runbook-dbt-retry-local`, and route to auto-execute; the act agent
+then retries `dbt build` (which passes because the model is already correct).
