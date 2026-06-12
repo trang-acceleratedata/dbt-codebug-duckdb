@@ -10,7 +10,7 @@ root-cause-patterns:
   - temporary unavailability
   - socket timeout
 rate-limit: 3 per hour
-auto-execute-eligible: true
+auto-execute-eligible: false
 runbook-class: resolution
 ---
 
