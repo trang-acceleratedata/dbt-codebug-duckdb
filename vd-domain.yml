@@ -1,0 +1,16 @@
+name: test-codebug
+slug: test-codebug
+destination:
+  type: duckdb
+  defaultSchema: main
+prodManifestPath: prod-manifest
+repository:
+  url: https://github.com/trang-acceleratedata/dbt-codebug-duckdb.git
+  fullName: trang-acceleratedata/dbt-codebug-duckdb
+  organization: trang-acceleratedata
+  name: dbt-codebug-duckdb
+  installationId: 0
+  defaultBranch: main
+dataLocation:
+  dev: ./data/test-codebug.duckdb
+  prod: /home/trangtnt/vd-studio/data/domains/test-codebug/test-codebug.duckdb
