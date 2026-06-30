@@ -1,19 +1,23 @@
 <!-- vd-meta
 engine: dbt
 artifact: fct_opportunity
-load_id: dbt-build-2026-06-12-0107
-error_code: TRANSIENT_CONNECTION
-error_message: "Read timed out while connecting to the DuckDB catalog: socket timeout after 30s (transient network error)"
+load_id: dbt-build-2026-06-30-0042
+error_code: UNKNOWN
+error_message: "Worker process exited unexpectedly (signal 9) during fct_opportunity build; no stack trace, dbt log, or run_results node was captured for the failed invocation."
 severity: p2
 -->
 
-## Pipeline failure: `fct_opportunity` dbt build timed out
+## Pipeline failure: `fct_opportunity` build aborted (signal 9, no diagnostics)
 
-The scheduled dbt build for `fct_opportunity` failed with a transient connection
-error (socket timeout reaching the warehouse catalog). No model or schema change
-was deployed recently and the project compiles cleanly — this looks like a
-transient network blip, not a logic or contract error.
+The scheduled `fct_opportunity` build aborted mid-run: the worker process exited
+with signal 9 and **no diagnostic output was captured** — no stack trace, no dbt
+log lines for the node, and `target/run_results.json` has no entry for the failed
+invocation. The project compiles cleanly and a manual rebuild **completes without
+error**, so the failure is not reproducible from here.
 
-Last run: `dbt-build-2026-06-12-0107` — status `error`,
-`error_code TRANSIENT_CONNECTION`. See `target/run_results.json` in the
-working tree (the model node carries the timeout message).
+It is not a connection timeout (no `TRANSIENT_CONNECTION`), there is no capacity
+or throttling signal in the platform metrics, and no model, contract, or schema
+change was deployed. With the evidence channels empty and no reproduction, the
+root cause cannot be confidently determined from this incident alone.
+
+Last run: `dbt-build-2026-06-30-0042` — status `error`, `error_code UNKNOWN`.
