@@ -1,19 +1,19 @@
 <!-- vd-meta
-engine: dbt
-artifact: fct_opportunity
-load_id: dbt-build-2026-06-12-0107
-error_code: TRANSIENT_CONNECTION
-error_message: "Read timed out while connecting to the DuckDB catalog: socket timeout after 30s (transient network error)"
+engine: dlt
+artifact: src_salesforce.opportunity
+load_id: 1718000000.01
+error_code: AUTH_EXPIRED
+error_message: "dlt extract failed: HTTP 401 Unauthorized from Salesforce — the API bearer token (dlt.secrets) was rejected. Two prior loads of this resource succeeded; only this run failed."
 severity: p2
 -->
 
-## Pipeline failure: `fct_opportunity` dbt build timed out
+## dlt ingestion failure: `src_salesforce.opportunity` (401 Unauthorized)
 
-The scheduled dbt build for `fct_opportunity` failed with a transient connection
-error (socket timeout reaching the warehouse catalog). No model or schema change
-was deployed recently and the project compiles cleanly — this looks like a
-transient network blip, not a logic or contract error.
+The Salesforce -> DuckDB **dlt** pipeline failed at extract with `HTTP 401`. The
+bearer token configured in `dlt.secrets` was rejected — it looks expired/rotated.
+The pipeline code and schema are unchanged and two prior loads succeeded.
 
-Last run: `dbt-build-2026-06-12-0107` — status `error`,
-`error_code TRANSIENT_CONNECTION`. See `target/run_results.json` in the
-working tree (the model node carries the timeout message).
+This is an **operational credential rotation** (the Salesforce/identity owner must
+issue a new token and update the secret) — not a code or schema change, and no
+runbook covers credential rotation. See `dlt_pipeline/_dlt_loads.csv` for the
+failed load record.

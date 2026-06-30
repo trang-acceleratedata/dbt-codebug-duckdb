@@ -1,0 +1,2 @@
+load_id,schema_name,status,inserted_at,error
+1718000000.01,src_salesforce,failed,2026-06-30T07:40:02Z,"extract failed: HTTP 401 Unauthorized from Salesforce (Bearer token rejected)"
