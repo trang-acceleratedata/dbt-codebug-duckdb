@@ -1,7 +1,10 @@
--- BUG: won_amount must be 0 for opportunities that were not won.
--- This computes it as `amount` for every row, so lost opportunities carry a
--- non-zero won_amount. The singular test tests/assert_won_amount_zero_when_not_won.sql
--- catches it. Correct logic: case when is_won then amount else 0 end.
+-- Freshness-miss fixture (rollback-FAILED case).
+-- fct_opportunity carries a deliberately STALE load_date, so the
+-- runbook-reload-stale-mart `freshness-restored` post-condition
+-- (`count(*) where load_date >= current_date` > 0) fails even after a clean
+-- rebuild. That failing post-condition triggers the runbook's rollback step
+-- (`dbt run-operation restore_target_snapshot`) — a macro that does NOT exist,
+-- so the rollback itself ERRORS: the rollback-FAILED -> @-mention-DRE path.
 select
     opportunity_id,
     account_id,
@@ -10,5 +13,6 @@ select
     amount,
     close_date,
     is_won,
-    case when is_won then amount else 0 end as won_amount
+    case when is_won then amount else 0 end as won_amount,
+    cast('2020-01-01' as date) as load_date
 from {{ ref('stg_opportunities') }}
