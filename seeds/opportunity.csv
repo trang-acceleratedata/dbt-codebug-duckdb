@@ -1,5 +1,5 @@
-id,account_id,name,stage_name,amount,close_date,is_won
-006A,001A,Acme Expansion,Closed Won,125000,2026-05-01,true
-006B,001B,Globex Renewal,Closed Lost,78000,2026-04-15,false
-006C,001A,Acme Migration,Closed Won,210000,2026-06-10,true
-006D,001C,Initech POC,Closed Lost,32000,2026-03-20,false
+id,account_id,name,stage_name,amount,close_date,is_won,load_date
+006A,001A,Acme Expansion,Closed Won,125000,2026-05-01,true,2024-01-15
+006B,001B,Globex Renewal,Closed Lost,78000,2026-04-15,false,2024-01-15
+006C,001A,Acme Migration,Closed Won,210000,2026-06-10,true,2024-01-15
+006D,001C,Initech POC,Closed Lost,32000,2026-03-20,false,2024-01-15
