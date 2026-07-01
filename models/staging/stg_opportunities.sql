@@ -5,5 +5,6 @@ select
     stage_name,
     amount,
     close_date,
-    is_won
+    is_won,
+    load_date
 from {{ ref('opportunity') }}
