@@ -92,7 +92,7 @@
       "batch_results": null
     },
     {
-      "status": "skipped",
+      "status": "pass",
       "timing": [
         {
           "name": "compile",
@@ -119,7 +119,7 @@
       "batch_results": null
     },
     {
-      "status": "skipped",
+      "status": "pass",
       "timing": [
         {
           "name": "compile",
@@ -146,7 +146,7 @@
       "batch_results": null
     },
     {
-      "status": "skipped",
+      "status": "pass",
       "timing": [
         {
           "name": "compile",
