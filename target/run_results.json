@@ -65,7 +65,7 @@
       "batch_results": null
     },
     {
-      "status": "error",
+      "status": "success",
       "timing": [
         {
           "name": "compile",
@@ -83,7 +83,7 @@
       "adapter_response": {
         "_message": "OK"
       },
-      "message": "Read timed out while connecting to the DuckDB catalog: socket timeout after 30s (transient network error)",
+      "message": null,
       "failures": null,
       "unique_id": "model.codebug.fct_opportunity",
       "compiled": true,
