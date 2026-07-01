@@ -14,5 +14,5 @@ select
     close_date,
     is_won,
     case when is_won then amount else 0 end as won_amount,
-    cast('2020-01-01' as date) as load_date
+    current_date as load_date
 from {{ ref('stg_opportunities') }}
